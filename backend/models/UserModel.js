@@ -6,10 +6,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Your email address is required"],
     unique: true,
+    lowercase: true,
+    trim: true,
   },
   username: {
     type: String,
     required: [true, "Your username is required"],
+    trim: true,
   },
   password: {
     type: String,
@@ -17,12 +20,15 @@ const userSchema = new mongoose.Schema({
   },
   createdAt: {
     type: Date,
-    default: new Date(),
+    default: Date.now,
   },
 });
 
-userSchema.pre("save", async function () {
+// ✅ Middleware to hash password only if modified or new
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 12);
+  next();
 });
 
 module.exports = mongoose.model("User", userSchema);
