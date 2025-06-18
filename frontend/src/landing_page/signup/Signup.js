@@ -1,7 +1,6 @@
-// frontend/src/Signup.js
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import axios from "../../axios"; // Use axios instance
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styles from "../styles/signup.module.css";
@@ -20,33 +19,24 @@ const Signup = () => {
     setInputValue({ ...inputValue, [name]: value });
   };
 
-  const handleError = (err) =>
-    toast.error(err, {
-      position: "bottom-left",
-    });
+  const handleError = (err) => toast.error(err, { position: "bottom-left" });
 
   const handleSuccess = (msg) =>
-    toast.success(msg, {
-      position: "bottom-right",
-    });
+    toast.success(msg, { position: "bottom-right" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "http://localhost:3002/signup",
-        inputValue,
-        { withCredentials: true }
-      );
+      const { data } = await axios.post("/signup", inputValue);
 
       const { success, message, token } = data;
 
       if (success) {
         handleSuccess(message);
-        localStorage.setItem("authToken", token); // Store token
+        localStorage.setItem("authToken", token);
 
         setTimeout(() => {
-          window.location.href = "http://localhost:3001"; // Redirect to Project B
+          window.location.href = process.env.REACT_APP_DASHBOARD_URL;
         }, 1000);
       } else {
         handleError(message);
