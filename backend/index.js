@@ -25,7 +25,7 @@ app.use(
   cors({
     origin: [
       "https://tradeverse-frontend.onrender.com",
-      "https://tradeverse-dashboard.onrender.com",
+      "https://tradeverse-dashboard-6o5x.onrender.com",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
