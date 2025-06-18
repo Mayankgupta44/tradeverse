@@ -14,9 +14,19 @@ const { MONGO_URL, PORT = 3002 } = process.env;
 const app = express();
 
 // ✅ Enable CORS for frontend
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000",
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     credentials: true,
+//   })
+// );
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: [
+      "https://tradeverse-frontend.onrender.com",
+      "https://tradeverse-dashboard.onrender.com",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -197,7 +207,6 @@ app.get("/addPositions", async (req, res) => {
   });
   res.send("Done!");
 });
-
 
 // ✅ Holdings, Positions, Orders routes (your extra APIs)
 app.get("/allHoldings", async (req, res) => {
